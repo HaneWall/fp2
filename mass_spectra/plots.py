@@ -1,7 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
-from scipy.optimize import curve_fit
 import numpy as np
 
 # Colors
@@ -109,3 +108,9 @@ fit_u_to_me(u_peak_array=u_sf6_peaks, me_peak_array=me_sf6_peaks)
 #show_sf6()
 #show_krypton()
 #show_both()
+#show_probe_1()
+#peak_data_smaple_1 = create_peak_data('Probe1_2.txt', 1.08)
+#print(peak_data_smaple_1.to_latex())
+#show_probe_2()
+peak_data_smaple_2 = create_peak_data('Probe2.txt', 1.08)
+print(peak_data_smaple_2.to_latex())
