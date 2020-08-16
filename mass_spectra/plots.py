@@ -76,14 +76,22 @@ def show_sample_2(transform_u_toggle=True):
     axes.set_title(r'Probe 2')
     plt.show()
 
-def show_krypton():
+def show_krypton(isotope_relation=False, transform_u_toggle=True):
     u = read_data('krypton.txt')[0]
+    if transform_u_toggle:
+        u = model_func(u, 115.83, -42.344, 23.003)
     i = read_data('krypton.txt')[1]
 
+    if isotope_relation:
+        i = (i-1)/np.max(i-1)
+
     fig, axes = plt.subplots()
-    axes.plot(u, i, color='TEAL')
+    axes.plot(u, i, color='GREY')
     axes.grid(True, color='black', linestyle='dashed', alpha=0.2)
-    axes.set_xlabel(r'$U$ in $V$')
+    if transform_u_toggle:
+        axes.set_xlabel(r'$m/e$')
+    else:
+        axes.set_xlabel(r'$U$ in $V$')
     axes.set_ylabel(r'Intensität $I$')
     axes.set_title(r'Krypton')
     plt.show()
@@ -201,7 +209,7 @@ me_sf6_peaks = [32, 35, 51, 54, 70, 89, 108, 127]
 #peak_data  = create_peak_data(data='sf6.txt', minimal_height=1.08)
 #print(peak_data.to_latex())
 #show_sf6()
-#show_krypton()
+show_krypton()
 #show_both()
 #show_sample_1()
 #peak_data_sample_1 = create_peak_data('Probe1_2.txt', 1.08, True)
@@ -209,4 +217,4 @@ me_sf6_peaks = [32, 35, 51, 54, 70, 89, 108, 127]
 #show_sample_2()
 #peak_data_sample_2 = create_peak_data('Probe2.txt', 1.08, True)
 #print(peak_data_sample_2.to_latex())
-show_both_samples()
+#show_both_samples()
