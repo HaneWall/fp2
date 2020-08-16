@@ -68,7 +68,19 @@ def find_peak(data, minimal_height):
     indices = find_peaks(x=data, height=minimal_height)
     return indices
 
+def create_peak_data(data, minimal_height):
+    u_s = read_data(data)[0]
+    i_s = read_data(data)[1]
 
+    peaks_indices = find_peak(data=i_s, minimal_height=minimal_height)[0]
+    peak_u = [u_s[index] for index in peaks_indices]
+
+    peak_data = pd.DataFrame(find_peak(data=i_s, minimal_height=minimal_height)[1])
+    peak_data['U/V'] = peak_u
+    return peak_data
+
+peak_data  = create_peak_data(data='sf6.txt', minimal_height=1.08)
+print(peak_data.to_latex())
 #show_sf6()
 #show_krypton()
-show_both()
+#show_both()
