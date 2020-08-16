@@ -42,6 +42,30 @@ def show_krypton():
     axes.set_title(r'Krypton')
     plt.show()
 
+def show_probe_1():
+    u = read_data('Probe1_2.txt')[0]
+    i = read_data('Probe1_2.txt')[1]
+
+    fig, axes = plt.subplots()
+    axes.plot(u, i, color='TEAL')
+    axes.grid(True, color='black', linestyle='dashed', alpha=0.2)
+    axes.set_xlabel(r'$U$ in $V$')
+    axes.set_ylabel(r'Intensität $I$')
+    axes.set_title(r'Probe 1')
+    plt.show()
+
+def show_probe_2():
+    u = read_data('Probe2.txt')[0]
+    i = read_data('Probe2.txt')[1]
+
+    fig, axes = plt.subplots()
+    axes.plot(u, i, color='TEAL')
+    axes.grid(True, color='black', linestyle='dashed', alpha=0.2)
+    axes.set_xlabel(r'$U$ in $V$')
+    axes.set_ylabel(r'Intensität $I$')
+    axes.set_title(r'Probe 2')
+    plt.show()
+
 def show_both():
     u_k = read_data('krypton.txt')[0]
     i_k = read_data('krypton.txt')[1]
@@ -79,8 +103,10 @@ def create_peak_data(data, minimal_height):
     peak_data['U/V'] = peak_u
     return peak_data
 
-peak_data  = create_peak_data(data='sf6.txt', minimal_height=1.08)
-print(peak_data.to_latex())
+#peak_data  = create_peak_data(data='sf6.txt', minimal_height=1.08)
+#print(peak_data.to_latex())
 #show_sf6()
 #show_krypton()
 #show_both()
+show_probe_1()
+show_probe_2()
