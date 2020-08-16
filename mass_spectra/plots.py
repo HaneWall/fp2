@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
+from scipy.optimize import curve_fit
 import numpy as np
 
 # Colors
