@@ -19,7 +19,7 @@ def read_data(path):
     data = pd.read_csv(path, sep='\t', decimal='.', header=None)
     return data
 
-def show_sf6(transform_u_toggle):
+def show_sf6(transform_u_toggle=True):
     if transform_u_toggle:
         u = read_data('sf6.txt')[0]
         u = model_func(u, 115.83, -42.344, 23.003)
@@ -38,7 +38,7 @@ def show_sf6(transform_u_toggle):
     axes.set_title(r'$SF_6$')
     plt.show()
 
-def show_sample_1(transform_u_toggle):
+def show_sample_1(transform_u_toggle=True):
     if transform_u_toggle:
         u = read_data('Probe1_2.txt')[0]
         u = model_func(u, 115.83, -42.344, 23.003)
@@ -57,7 +57,7 @@ def show_sample_1(transform_u_toggle):
     axes.set_title(r'Probe 1')
     plt.show()
 
-def show_sample_2(transform_u_toggle):
+def show_sample_2(transform_u_toggle=True):
     if transform_u_toggle:
         u = read_data('Probe2.txt')[0]
         u = model_func(u, 115.83, -42.344, 23.003)
@@ -110,11 +110,50 @@ def show_both():
     axes.legend(loc='best')
     plt.show()
 
+def show_both_samples(transform_u_toggle=True):
+    u_s1 = read_data('Probe1_2.txt')[0]
+    u_s2 = read_data('Probe2.txt')[0]
+    if transform_u_toggle:
+        u_s1 = model_func(u_s1, 115.83, -42.344, 23.003)
+        u_s2 = model_func(u_s2, 115.83, -42.344, 23.003)
+    i_s1 = read_data('Probe1_2.txt')[1]
+    i_s2 = read_data('Probe2.txt')[1]
+
+    peaks_s1_pos = find_peak(data=i_s1, minimal_height=1.08)[0]
+    peaks_s2_pos = find_peak(data=i_s2, minimal_height=1.08)[0]
+
+    peak_i_s1 = [i_s1[index] for index in peaks_s1_pos]
+    peak_u_s1 = [u_s1[index] for index in peaks_s1_pos]
+    peak_i_s2 = [i_s2[index] for index in peaks_s2_pos]
+    peak_u_s2 = [u_s2[index] for index in peaks_s2_pos]
+
+    fig, axes = plt.subplots(ncols=1, nrows=2)
+    axes[0].plot(u_s1, i_s1, color=BLUE, label='Probe 1')
+    axes[0].plot(peak_u_s1, peak_i_s1, color='RED', linestyle='None', marker='+')
+    axes[0].grid(True, color='black', linestyle='dashed', alpha=0.2)
+    if transform_u_toggle:
+        axes[0].set_xlabel(r'$m/e$')
+    else:
+        axes[0].set_xlabel(r'$U$ in $V$')
+    axes[0].set_ylabel(r'Intensität $I$')
+    axes[0].legend(loc='best')
+
+    axes[1].plot(u_s2, i_s2, color='TEAL', label='Probe 2')
+    axes[1].plot(peak_u_s2, peak_i_s2, color='RED', linestyle='None', marker='+')
+    axes[1].grid(True, color='black', linestyle='dashed', alpha=0.2)
+    if transform_u_toggle:
+        axes[1].set_xlabel(r'$m/e$')
+    else:
+        axes[1].set_xlabel(r'$U$ in $V$')
+    axes[1].set_ylabel(r'Intensität $I$')
+    axes[1].legend(loc='best')
+    plt.show()
+
 def find_peak(data, minimal_height):
     indices = find_peaks(x=data, height=minimal_height)
     return indices
 
-def create_peak_data(data, minimal_height, transform_u_toggle):
+def create_peak_data(data, minimal_height, transform_u_toggle=True):
     if transform_u_toggle:
         u_s = read_data(data)[0]
         u_s = model_func(u_s, 115.83, -42.344, 23.003)
@@ -161,12 +200,13 @@ me_sf6_peaks = [32, 35, 51, 54, 70, 89, 108, 127]
 #fit_u_to_me(u_peak_array=u_sf6_peaks, me_peak_array=me_sf6_peaks)
 #peak_data  = create_peak_data(data='sf6.txt', minimal_height=1.08)
 #print(peak_data.to_latex())
-#show_sf6(True)
+#show_sf6()
 #show_krypton()
 #show_both()
 #show_sample_1()
 #peak_data_sample_1 = create_peak_data('Probe1_2.txt', 1.08, True)
 #print(peak_data_sample_1.to_latex())
 #show_sample_2()
-peak_data_sample_2 = create_peak_data('Probe2.txt', 1.08, True)
-print(peak_data_sample_2.to_latex())
+#peak_data_sample_2 = create_peak_data('Probe2.txt', 1.08, True)
+#print(peak_data_sample_2.to_latex())
+show_both_samples()
