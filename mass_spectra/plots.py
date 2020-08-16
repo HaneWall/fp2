@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.signal import find_peaks
+from scipy.optimize import curve_fit
 import numpy as np
 
 # Colors
@@ -79,8 +80,32 @@ def create_peak_data(data, minimal_height):
     peak_data['U/V'] = peak_u
     return peak_data
 
-peak_data  = create_peak_data(data='sf6.txt', minimal_height=1.08)
-print(peak_data.to_latex())
+def model_func(u,a,b,c):
+    return a*u**2 + b*u + c
+
+def fit_u_to_me(u_peak_array, me_peak_array):
+    u = np.arange(0.4, 1.3, 0.01)
+    popt, pcov = curve_fit(model_func, xdata=u_peak_array, ydata=me_peak_array)
+    standard_deviation = np.sqrt(np.diag(pcov))
+    fig, axes = plt.subplots()
+    axes.grid(True, color='black', linestyle='dashed', alpha=0.2)
+    axes.set_xlabel(r'$U$ in $V$')
+    axes.set_ylabel(r'$\frac{m}{e}$')
+    axes.plot(u, model_func(u, *popt), color='TEAL', label='fit: a=%5.3f, b=%5.3f, c=%5.3f' % tuple(popt), linestyle='dashed')
+    axes.plot(u_peak_array, me_peak_array, linestyle='None', marker='o', color='RED', label='Data')
+    axes.legend(loc='best')
+    print(standard_deviation)
+    plt.show()
+
+
+# 0.410671
+# 19
+u_sf6_peaks = [0.512195, 0.552439, 0.712500, 0.734451, 0.843293, 0.956707, 1.057317, 1.149695]
+me_sf6_peaks = [32, 35, 51, 54, 70, 89, 108, 127]
+
+fit_u_to_me(u_peak_array=u_sf6_peaks, me_peak_array=me_sf6_peaks)
+#peak_data  = create_peak_data(data='sf6.txt', minimal_height=1.08)
+#print(peak_data.to_latex())
 #show_sf6()
 #show_krypton()
 #show_both()
