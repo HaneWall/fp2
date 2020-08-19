@@ -83,6 +83,31 @@ def model_func(u, a, b):
 	return a * u + b
 
 
+def show_cd():
+	theta1 = read_data_comma('resources/cd_34_10_02_6_1.txt')[0]
+	n1 = read_data_comma('resources/cd_34_10_02_6_1.txt')[1]
+	theta2 = read_data_comma('resources/cd_34_10_02_6_2.txt')[0]
+	n2 = read_data_comma('resources/cd_34_10_02_6_2.txt')[1]
+	theta3 = read_data_comma('resources/cd_34_10_02_10_3ni.txt')[0]
+	n3 = read_data_comma('resources/cd_34_10_02_10_3ni.txt')[1]
+	theta_theo = read_data('resources/Cd_PowderPattern_98179.txt')[0]
+	n_theo = read_data('resources/Cd_PowderPattern_98179.txt')[1]
+
+	n_theo = n_theo / max(n_theo) * max(n1)
+
+	fig, axes = plt.subplots()
+	axes.plot(theta1, n1, color='red', label='Cd')
+	axes.plot(theta2, n2, color='red')
+	axes.plot(theta3, n3, color='grey', label='Cd mit Ni')
+	axes.plot(theta_theo, n_theo, color='orange', label='Cd Theo')
+	axes.grid(True, color='black', linestyle='dashed', alpha=0.2)
+	axes.set_xlabel(r'$\theta$ in °')
+	axes.set_ylabel(r'Streuintensität')
+	axes.legend(loc='best')
+	plt.show()
+
+
+
 
 def duane_hant():
 	energys = [9, 12, 15, 18, 21, 24, 27, 30]
@@ -166,4 +191,7 @@ def show_task_two():
 	plt.show()
 
 
+# show_all()
+# show_task_two()
+show_cd()
 show_alu()
