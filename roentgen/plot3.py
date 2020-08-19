@@ -22,6 +22,10 @@ def read_data(path):
 	data = pd.read_csv(path, sep='\t', decimal='.', header=None)
 	return data
 
+def read_data_comma(path):
+	data = pd.read_csv(path, sep='\t', decimal=',', header=None)
+	return data
+
 
 def theta_to_lambda(thetas, gitter_distance):
 	if isinstance(thetas, list):
@@ -75,3 +79,18 @@ def duane_hant():
 	plt.show()
 
 duane_hant()
+def show_task_one():
+	theta = read_data_comma('resources/lif_34_10_02_5_.txt')[0]
+	n = read_data_comma('resources/lif_34_10_02_5_.txt')[1]
+	lam = theta_to_lambda(theta, 0.2014)
+	fig, axes = plt.subplots()
+	axes.plot(lam, n, color='red', label='CU-Spektrum')
+	axes.bar(theta_to_lambda(22.5, 0.2014), 8435, color='blue', label=r'$K_\alpha$ = ' + str(theta_to_lambda(22.5, 0.2014)), width=0.0005)
+	axes.grid(True, color='black', linestyle='dashed', alpha=0.2)
+	axes.set_xlabel(r'$\lambda$ in nm')
+	axes.set_ylabel(r'Impulse')
+	axes.legend(loc='best')
+	plt.show()
+
+#show_all()
+show_task_one()
