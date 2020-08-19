@@ -22,6 +22,18 @@ def read_data(path):
 	return data
 
 
+def theta_to_lambda(thetas, gitter_distance):
+	if isinstance(thetas, list):
+		radians = []
+		lambdas = []
+		for theta in thetas:
+			radians.append(theta * np.pi/180)
+		for radian in radians:
+			lambdas.append(2*gitter_distance*np.sin(radian))
+		return lambdas
+	else:
+		return 2*gitter_distance*np.sin(thetas*np.pi/180)
+
 def show_all():
 	theta = []
 	n = []
