@@ -90,10 +90,11 @@ def show_cd():
 	n2 = read_data_comma('resources/cd_34_10_02_6_2.txt')[1]
 	theta3 = read_data_comma('resources/cd_34_10_02_10_3ni.txt')[0]
 	n3 = read_data_comma('resources/cd_34_10_02_10_3ni.txt')[1]
-	theta_theo = read_data('resources/Cd_PowderPattern_98179.txt')[0]
-	n_theo = read_data('resources/Cd_PowderPattern_98179.txt')[1]
+	theta_theo = read_data_theo('resources/Cd_PowderPattern_98179.txt')[0]
+	n_theo = read_data_theo('resources/Cd_PowderPattern_98179.txt')[1]
 
 	n_theo = n_theo / max(n_theo) * max(n1)
+	theta_theo = theta_theo / 2
 
 	fig, axes = plt.subplots()
 	axes.plot(theta1, n1, color='red', label='Cd')
@@ -107,6 +108,15 @@ def show_cd():
 	plt.show()
 
 
+cd_peak = {
+	'0': 17.6,
+	'1': 19.5,
+	'2': 24.4,
+	'3': 30.6,
+	'5': 49.0
+}
+
+cd_peak_list = [17.6, 19.5, 24.4, 30.6, 49.0]
 
 
 def duane_hant():
@@ -194,4 +204,4 @@ def show_task_two():
 # show_all()
 # show_task_two()
 show_cd()
-show_alu()
+# show_alu()
