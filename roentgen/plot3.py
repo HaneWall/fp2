@@ -116,7 +116,25 @@ cd_peak = {
 	'5': 49.0
 }
 
-cd_peak_list = [17.6, 19.5, 24.4, 30.6, 49.0]
+cd_peak_list =[float(item) for item in cd_peak.values()]
+cd_l_list = [int(key) for key in cd_peak.keys()]
+
+
+def cd_ausgleich():
+	radians = [elem*np.pi / 180 for elem in cd_peak_list]
+	y_data = np.sin(radians)**2
+	x_data = np.array([l**2 for l in cd_l_list])
+	popt, pcov = curve_fit(model_func, xdata=x_data, ydata=y_data)
+	standard_deviation = np.sqrt(np.diag(pcov))
+	fig, axes = plt.subplots()
+	axes.plot(x_data, model_func(x_data, *popt), label='fit: a=%5.3e, b=%5.3e' % tuple(popt), color=TEAL, linestyle='dashed')
+	axes.plot(x_data, y_data, marker='o', color=RED, linestyle='none', label='data')
+
+	axes.grid(True, color='black', linestyle='dashed', alpha=0.2)
+	axes.set_ylabel(r'$sin(\theta)^2$')
+	axes.set_xlabel(r'$l^2$')
+	axes.legend(loc='best')
+	plt.show()
 
 
 def duane_hant():
@@ -137,8 +155,6 @@ def duane_hant():
 	axes.grid(True, color='black', linestyle='dashed', alpha=0.2)
 	plt.show()
 
-
-# duane_hant()
 
 def show_task_one():
 	theta = read_data_comma('resources/lif_34_10_02_5_.txt')[0]
@@ -200,8 +216,8 @@ def show_task_two():
 	axes[1].legend(loc='best')
 	plt.show()
 
-
+cd_ausgleich()
 # show_all()
 # show_task_two()
-show_cd()
+#show_cd()
 # show_alu()
