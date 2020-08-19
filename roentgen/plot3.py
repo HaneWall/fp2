@@ -23,6 +23,9 @@ def read_data(path):
 	data = pd.read_csv(path, sep='\t', decimal='.', header=None)
 	return data
 
+def read_data_theo(path):
+	data = pd.read_csv(path, sep='\s+', decimal='.', header=None)
+	return data
 
 def read_data_comma(path):
 	data = pd.read_csv(path, sep='\t', decimal=',', header=None)
@@ -40,6 +43,21 @@ def theta_to_lambda(thetas, gitter_distance):
 		return lambdas
 	else:
 		return 2 * gitter_distance * np.sin(thetas * np.pi / 180)
+
+def show_alu():
+	theta_exp = read_data_comma('resources/al_34_10_02_6_.txt')[0]
+	imp_exp = read_data_comma('resources/al_34_10_02_6_.txt')[1]
+	theta_theo = np.array(read_data_theo('resources/Al_PowderPattern_64700.txt')[0])/2
+	imp_theo = np.array(read_data_theo('resources/Al_PowderPattern_64700.txt')[1])/5000 * 175
+	fig, axes = plt.subplots()
+	axes.plot(theta_theo, imp_theo, color=ORANGE, label='Al normierte Theorie')
+	axes.plot(theta_exp, imp_exp, color=TEAL, label='Al Exp')
+	axes.grid(True, color='black', linestyle='dashed', alpha=0.2)
+	axes.legend(loc='best')
+	axes.set_xlabel(r'$\theta$ in °')
+	axes.set_ylabel('Impulse')
+	plt.show()
+
 
 
 def show_all():
@@ -63,6 +81,7 @@ def show_all():
 
 def model_func(u, a, b):
 	return a * u + b
+
 
 
 def duane_hant():
@@ -147,5 +166,4 @@ def show_task_two():
 	plt.show()
 
 
-# show_all()
-show_task_two()
+show_alu()

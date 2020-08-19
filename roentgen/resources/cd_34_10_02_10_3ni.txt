@@ -1,6 +1,3 @@
-X-ray (ID 01) / Crystal angle ?_c	X-ray (ID 01) / Impulse Imp
-?_c/°	Imp/# / s
-
 14,0	35
 14,1	36
 14,2	37
