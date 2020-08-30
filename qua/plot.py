@@ -60,13 +60,14 @@ def peak_alpha_plot(path):
 	peak1 = np.array([39.938, 33.978, 32.498, 33.404, 28.64, 18.582, 12.634, 27.43, 42.152, 53.847])
 	peak2 = np.array([17.01, 20.806, 20.781, 24.253, 27.508, 28.312, 25.302, 26.384, 52.119, 58.032])
 	alpha = pd.DataFrame([0, 10, 30, 50, 70, 90, 110, 130, 150, 180])  # TODO: edit alpha to theta
-	alpha[0] = np.arccos(1 / 2 * (np.cos(alpha[0]) - 1)) #TODO: is wrong
+	alpha[0] = np.arccos(1 / 2 * (np.cos(alpha[0]*np.pi/180) - 1)) #TODO: is wrong
 	fig, axes = plt.subplots()
-	axes.plot(alpha[0], peak1, color=TEAL, marker='+')
-	axes.plot(alpha[0], peak2, color=RED, marker='*')
+	axes.plot(alpha[0], peak1, color=TEAL, marker='+', label='Resonanz 1')
+	axes.plot(alpha[0], peak2, color=RED, marker='*', label='Resonanz 2')
 	axes.grid(True, color='black', linestyle='dashed', alpha=0.2)
-	axes.set_xlabel(r'$\alpha$ in $\degree$')
+	axes.set_xlabel(r'$\theta$ in rad')
 	axes.set_ylabel(r'amplitude')
+	axes.legend(loc='best')
 	plt.show()
 
 
@@ -82,10 +83,14 @@ def show_polar_plots(path, labels):
 		amplitude = data['Amplitude']
 		axes = fig.add_subplot(2, 3, m, projection='polar')
 		axes.plot(alpha, amplitude, color=TEAL, marker='+', label=labels[i])
+		axes.plot(-alpha, amplitude, color=TEAL, marker='+')
+		axes.plot(alpha + np.pi, amplitude, color=TEAL, marker='+')
+		axes.plot(-alpha+np.pi, amplitude, color=TEAL, marker='+')
 		axes.grid(True, color='black', linestyle='dashed', alpha=0.2)
-		axes.set_xlabel(r'$\alpha$')
-		axes.set_ylabel(r'amplitude')
-		axes.fill_between(alpha, amplitude)
+		axes.fill_between(-alpha, amplitude)
+		axes.fill_between(alpha, amplitude, facecolor=BLUE)
+		axes.fill_between(-alpha+np.pi, amplitude, facecolor=BLUE)
+		axes.fill_between(alpha + np.pi, amplitude, facecolor=BLUE)
 		axes.legend(loc='best')
 		m = m + 1
 	plt.show()
@@ -105,7 +110,7 @@ def show_spec_with_peaks(path):
 	print(data_table)
 
 	fig, axes = plt.subplots(nrows=2, ncols=1)
-	axes[0].plot(frequence, amplitude, color=TEAL, marker='+', label='600mm with peaks')
+	axes[0].plot(frequence, amplitude, color=TEAL, marker='+', label='10mm iris')
 	axes[0].plot(peak_freq, peak_amp, color=RED, marker='*', linestyle='None')
 	axes[0].grid(True, color='black', linestyle='dashed', alpha=0.2)
 	axes[0].set_xlabel('frequence in Hz')
@@ -192,14 +197,14 @@ task9_labels = ['Iris 10mm Stör 75mm',
 # Aufgabe 1
 #show_spec_single('aufgabe1.dat', r'spectrum')
 # show_spec_single(task1_2_data_list) # peak control
-#peak_alpha_plot(task1_2_data_list) #TODO: correct alpha
+#peak_alpha_plot(task1_2_data_list)
 
 # Aufgabe 2
 #show_spec_list(task2_list, task2_labels)
 #show_spec_single('alpha_0_5000.dat', r'$\alpha=0\degree$' '\nhigh reslution')
 
 # Aufgabe 3
-#show_polar_plots(polar_plot_list, polar_plot_labels) #TODO: rotate, order
+#show_polar_plots(polar_plot_list, polar_plot_labels)
 
 # Aufgabe 4
 #show_spec_list(task4_1_list, task4_labels)
@@ -214,7 +219,7 @@ task9_labels = ['Iris 10mm Stör 75mm',
 # Aufgabe 7
 #show_spec_list(task7_path_list, task7_labels)
 
-# Aufgabe 8 #TODO: right?
+# Aufgabe 8 #TODO: change labels
 #show_spec_with_peaks('2_3_600_16.dat')
 #show_spec_with_peaks('2_3_600_13.dat')
 #show_spec_with_peaks('2_3_600_10.dat')
